@@ -80,7 +80,7 @@ dependencies {
     implementation(libs.fabric.api)
     implementation(libs.fabric.language.kotlin)
     compileOnly(libs.modmenu)
-    runtimeOnly(libs.modmenu)
+    localRuntime(libs.modmenu)
     testImplementation(libs.modmenu)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)

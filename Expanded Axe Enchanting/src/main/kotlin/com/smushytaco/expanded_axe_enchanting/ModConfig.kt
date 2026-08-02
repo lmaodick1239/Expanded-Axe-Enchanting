@@ -4,6 +4,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
+import com.google.gson.stream.JsonReader
+import java.io.StringReader
 import net.fabricmc.loader.api.FabricLoader
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -58,6 +60,7 @@ class ModConfig private constructor(@Transient private val path: Path) {
 
     private fun load() {
         if (!Files.exists(path)) {
+            if (migrateLegacy()) return
             save()
             return
         }
@@ -71,6 +74,28 @@ class ModConfig private constructor(@Transient private val path: Path) {
             if (exception !is JsonParseException && exception !is IllegalStateException) throw exception
             recoverInvalidConfig(exception)
         }
+    }
+
+    private fun migrateLegacy(): Boolean {
+        val legacy = path.resolveSibling("${path.fileName.toString().removeSuffix(".json")}.json5")
+        if (!Files.exists(legacy)) return false
+
+        try {
+            val content = Files.readString(legacy)
+            val normalized = content
+                .replace(Regex("(?s)/\\*.*?\\*/|//[^\\r\\n]*"), "")
+                .replace(Regex(",\\s*([}\\]])"), "$1")
+            val json = JsonReader(StringReader(normalized)).apply { isLenient = true }
+                .use(JsonParser::parseReader).asJsonObject
+            apply(json)
+        } catch (exception: IOException) {
+            throw IllegalStateException("Unable to read legacy configuration from $legacy", exception)
+        } catch (exception: RuntimeException) {
+            if (exception !is JsonParseException && exception !is IllegalStateException) throw exception
+            System.err.println("Invalid legacy configuration at $legacy was preserved; enabled defaults will be used: ${exception.message}")
+        }
+        save()
+        return true
     }
 
     private fun apply(json: JsonObject) {

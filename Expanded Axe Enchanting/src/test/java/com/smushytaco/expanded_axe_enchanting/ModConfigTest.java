@@ -40,6 +40,80 @@ class ModConfigTest {
     }
 
     @Test
+    void migratesLegacyJson5WithCommentsTrailingCommasAndMixedValues() throws IOException {
+        Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
+        Path legacy = tempDirectory.resolve("expanded_axe_enchanting.json5");
+        String legacyJson5 = """
+                {
+                  // retained user choices
+                  "canUseFireAspectOnAxe": false,
+                  "canUseKnockbackOnAxe": true,
+                  "canUseLootingOnAxe": false,
+                  "canUseImpalingOnAxe": true,
+                  "canUseDensityOnAxe": false,
+                  "canUseBreachOnAxe": true,
+                  "canUseWindBurstOnAxe": false,
+                }
+                """;
+        Files.writeString(legacy, legacyJson5);
+
+        ModConfig config = ModConfig.createAndLoad(path);
+
+        assertFalse(config.getCanUseFireAspectOnAxe());
+        assertTrue(config.getCanUseKnockbackOnAxe());
+        assertFalse(config.getCanUseLootingOnAxe());
+        assertTrue(config.getCanUseImpalingOnAxe());
+        assertFalse(config.getCanUseDensityOnAxe());
+        assertTrue(config.getCanUseBreachOnAxe());
+        assertFalse(config.getCanUseWindBurstOnAxe());
+        assertTrue(Files.exists(path));
+        assertTrue(Files.readString(legacy).equals(legacyJson5));
+    }
+
+    @Test
+    void migratesAllDisabledLegacyValues() throws IOException {
+        Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
+        Path legacy = tempDirectory.resolve("expanded_axe_enchanting.json5");
+        Files.writeString(legacy, allDisabledJson());
+
+        assertAllDisabled(ModConfig.createAndLoad(path));
+    }
+
+    @Test
+    void partialLegacyConfigKeepsEnabledDefaults() throws IOException {
+        Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
+        Files.writeString(tempDirectory.resolve("expanded_axe_enchanting.json5"), "{canUseFireAspectOnAxe:false,}");
+
+        ModConfig config = ModConfig.createAndLoad(path);
+
+        assertFalse(config.getCanUseFireAspectOnAxe());
+        assertTrue(config.getCanUseKnockbackOnAxe());
+    }
+
+    @Test
+    void malformedLegacyIsPreservedAndCurrentDefaultsAreWritten() throws IOException {
+        Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
+        Path legacy = tempDirectory.resolve("expanded_axe_enchanting.json5");
+        String malformed = "{canUseFireAspectOnAxe: definitely}";
+        Files.writeString(legacy, malformed);
+
+        ModConfig config = ModConfig.createAndLoad(path);
+
+        assertAllEnabled(config);
+        assertTrue(Files.readString(legacy).equals(malformed));
+        assertAllEnabled(JsonParser.parseString(Files.readString(path)).getAsJsonObject());
+    }
+
+    @Test
+    void currentConfigTakesPrecedenceOverLegacy() throws IOException {
+        Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
+        Files.writeString(path, allDisabledJson());
+        Files.writeString(tempDirectory.resolve("expanded_axe_enchanting.json5"), "{canUseFireAspectOnAxe:true}");
+
+        assertAllDisabled(ModConfig.createAndLoad(path));
+    }
+
+    @Test
     void savesChangedValuesForReload() {
         Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
         ModConfig config = ModConfig.createAndLoad(path);
