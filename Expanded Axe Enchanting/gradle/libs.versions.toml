@@ -32,6 +32,8 @@ fabric-language-kotlin = "1.13.10+kotlin.2.3.20"
 owo = "0.13.0+26.1"
 # Check this on https://maven.kosmx.dev/dev/kosmx/kowoconfig/ksp-owo-config/
 kspOwoConfig = "0.2.0"
+junit = "5.13.4"
+mockito = "5.18.0"
 ##########################################################################
 
 [libraries]
@@ -41,6 +43,10 @@ fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.r
 fabric-language-kotlin = { group = "net.fabricmc", name = "fabric-language-kotlin", version.ref = "fabric-language-kotlin" }
 owo = { group = "io.wispforest", name = "owo-lib", version.ref = "owo" }
 kspOwoConfig = { group = "dev.kosmx.kowoconfig", name = "ksp-owo-config", version.ref = "kspOwoConfig" }
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 
 [plugins]
 loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }

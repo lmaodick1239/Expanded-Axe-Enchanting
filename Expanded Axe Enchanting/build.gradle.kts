@@ -82,6 +82,10 @@ dependencies {
     implementation(libs.fabric.language.kotlin)
     implementation(libs.owo)
     ksp(libs.kspOwoConfig)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockito.core)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 java {
     toolchain {
@@ -123,7 +127,10 @@ tasks {
     }
     withType<JavaExec>().configureEach { defaultCharacterEncoding = "UTF-8" }
     withType<Javadoc>().configureEach { options.encoding = "UTF-8" }
-    withType<Test>().configureEach { defaultCharacterEncoding = "UTF-8" }
+    withType<Test>().configureEach {
+        defaultCharacterEncoding = "UTF-8"
+        useJUnitPlatform()
+    }
     withType<KotlinCompile>().configureEach {
         compilerOptions {
             extraWarnings = true
