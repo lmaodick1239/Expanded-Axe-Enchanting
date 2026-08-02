@@ -3,6 +3,7 @@
   "package": "com.smushytaco.expanded_axe_enchanting.mixins",
   "compatibilityLevel": "JAVA_${java}",
   "mixins": [
+    "AnvilMenuMixin",
     "AxeModification"
   ],
   "injectors": {

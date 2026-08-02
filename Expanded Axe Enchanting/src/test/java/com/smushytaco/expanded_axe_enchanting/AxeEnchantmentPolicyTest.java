@@ -46,8 +46,10 @@ class AxeEnchantmentPolicyTest {
 
     @ParameterizedTest
     @MethodSource("supportedEnchantments")
-    void enabledEnchantmentExtendsApplicabilityToAxes(ResourceKey<Enchantment> enchantmentKey) {
-        assertTrue(AxeEnchantmentPolicy.extendApplicability(false, axe, enchantmentKey, config));
+    void enabledEnchantmentHolderExtendsApplicabilityToAxes(ResourceKey<Enchantment> enchantmentKey) {
+        Holder<Enchantment> enchantment = Holder.Reference.createStandAlone(new HolderOwner<>() {}, enchantmentKey);
+
+        assertTrue(AxeEnchantmentPolicy.extendApplicability(false, axe, enchantment, config));
     }
 
     @ParameterizedTest
