@@ -30,8 +30,7 @@
     "fabricloader": ">=${fabricloader}",
     "fabric-api": ">=${fabric_api}",
     "fabric-language-kotlin": ">=${fabric_language_kotlin}",
-    "minecraft": ">=${minecraft}",
-    "java": ">=${java}",
-    "owo": ">=${owo_version}"
+    "minecraft": "~${minecraft}",
+    "java": ">=${java}"
   }
 }

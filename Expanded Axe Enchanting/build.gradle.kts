@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.loom)
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.minotaur)
     alias(libs.plugins.curseForgeGradle)
     alias(libs.plugins.dotenv)
@@ -71,7 +70,6 @@ loom {
 }
 
 repositories {
-    maven("https://maven.wispforest.io")
     maven("https://maven.kosmx.dev/")
     maven("https://jitpack.io")
 }
@@ -80,8 +78,6 @@ dependencies {
     implementation(libs.loader)
     implementation(libs.fabric.api)
     implementation(libs.fabric.language.kotlin)
-    implementation(libs.owo)
-    ksp(libs.kspOwoConfig)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockito.core)
@@ -151,8 +147,7 @@ tasks {
             "fabric_api" to libs.versions.fabric.api.get(),
             "fabric_language_kotlin" to libs.versions.fabric.language.kotlin.get(),
             "minecraft" to libs.versions.minecraft.get(),
-            "java" to libs.versions.java.get(),
-            "owo_version" to libs.versions.owo.get()
+            "java" to libs.versions.java.get()
         )
         inputs.properties(resourceMap)
         filesMatching("fabric.mod.json") { expand(resourceMap) }

@@ -3,8 +3,7 @@
   "package": "com.smushytaco.expanded_axe_enchanting.mixins",
   "compatibilityLevel": "JAVA_${java}",
   "mixins": [
-    "AxeModification",
-    "ChatFormattingCompatibilityMixin"
+    "AxeModification"
   ],
   "injectors": {
     "defaultRequire": 1
