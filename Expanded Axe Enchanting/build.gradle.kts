@@ -71,6 +71,7 @@ loom {
 
 repositories {
     maven("https://maven.kosmx.dev/")
+    maven("https://maven.terraformersmc.com/releases/")
     maven("https://jitpack.io")
 }
 dependencies {
@@ -78,6 +79,9 @@ dependencies {
     implementation(libs.loader)
     implementation(libs.fabric.api)
     implementation(libs.fabric.language.kotlin)
+    compileOnly(libs.modmenu)
+    runtimeOnly(libs.modmenu)
+    testImplementation(libs.modmenu)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockito.core)
@@ -173,7 +177,7 @@ modrinth {
     gameVersions.add(libs.versions.minecraft)
     versionName = libs.versions.minecraft.map { "[$it] Expanded Axe Enchanting" }
     dependencies {
-        required.project("fabric-api", "fabric-language-kotlin", "owo-lib")
+        required.project("fabric-api", "fabric-language-kotlin")
         optional.project("modmenu")
     }
 }

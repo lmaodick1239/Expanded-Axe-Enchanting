@@ -21,6 +21,9 @@
         "adapter": "kotlin",
         "value": "com.smushytaco.expanded_axe_enchanting.ExpandedAxeEnchanting"
       }
+    ],
+    "modmenu": [
+      "com.smushytaco.expanded_axe_enchanting.ExpandedAxeEnchantingModMenu"
     ]
   },
   "mixins": [
