@@ -74,13 +74,21 @@ class ModConfig private constructor(@Transient private val path: Path) {
     }
 
     private fun apply(json: JsonObject) {
-        canUseFireAspectOnAxe = json.booleanOrDefault("canUseFireAspectOnAxe")
-        canUseKnockbackOnAxe = json.booleanOrDefault("canUseKnockbackOnAxe")
-        canUseLootingOnAxe = json.booleanOrDefault("canUseLootingOnAxe")
-        canUseImpalingOnAxe = json.booleanOrDefault("canUseImpalingOnAxe")
-        canUseDensityOnAxe = json.booleanOrDefault("canUseDensityOnAxe")
-        canUseBreachOnAxe = json.booleanOrDefault("canUseBreachOnAxe")
-        canUseWindBurstOnAxe = json.booleanOrDefault("canUseWindBurstOnAxe")
+        val fireAspect = json.booleanOrDefault("canUseFireAspectOnAxe")
+        val knockback = json.booleanOrDefault("canUseKnockbackOnAxe")
+        val looting = json.booleanOrDefault("canUseLootingOnAxe")
+        val impaling = json.booleanOrDefault("canUseImpalingOnAxe")
+        val density = json.booleanOrDefault("canUseDensityOnAxe")
+        val breach = json.booleanOrDefault("canUseBreachOnAxe")
+        val windBurst = json.booleanOrDefault("canUseWindBurstOnAxe")
+
+        canUseFireAspectOnAxe = fireAspect
+        canUseKnockbackOnAxe = knockback
+        canUseLootingOnAxe = looting
+        canUseImpalingOnAxe = impaling
+        canUseDensityOnAxe = density
+        canUseBreachOnAxe = breach
+        canUseWindBurstOnAxe = windBurst
     }
 
     private fun recoverInvalidConfig(cause: RuntimeException) {

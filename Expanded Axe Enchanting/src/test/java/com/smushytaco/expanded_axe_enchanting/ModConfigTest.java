@@ -75,6 +75,19 @@ class ModConfigTest {
     }
 
     @Test
+    void laterInvalidValueDoesNotPersistEarlierValidValue() throws IOException {
+        Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
+        String invalidJson = "{\"canUseFireAspectOnAxe\":false,\"canUseKnockbackOnAxe\":\"yes\"}";
+        Files.writeString(path, invalidJson);
+
+        ModConfig config = ModConfig.createAndLoad(path);
+
+        assertAllEnabled(config);
+        assertTrue(Files.readString(path.resolveSibling(path.getFileName() + ".invalid")).equals(invalidJson));
+        assertAllEnabled(JsonParser.parseString(Files.readString(path)).getAsJsonObject());
+    }
+
+    @Test
     void partialConfigKeepsDefaultsForMissingValues() throws IOException {
         Path path = tempDirectory.resolve("expanded_axe_enchanting.json");
         Files.writeString(path, "{\"canUseFireAspectOnAxe\":false}");
